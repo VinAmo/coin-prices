@@ -18,6 +18,9 @@ const config: Config = {
       colors: {
         primary: colors.green,
       },
+      fontFamily: {
+        primary: ['"Black Ops One"', "cursive"],
+      },
     },
   },
   darkMode: "class",

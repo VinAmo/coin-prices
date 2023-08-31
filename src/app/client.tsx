@@ -1,6 +1,6 @@
 "use client";
 
-import { CoinType } from "@/types";
+import { CoinData, CoinType } from "@/types";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
@@ -8,22 +8,7 @@ const DynamicButton = dynamic(() => import("@/components/button"), {
   ssr: false,
 });
 
-const data = {
-  sell: "AUD",
-  buy: "BTC",
-  ask: 42711.81772783,
-  bid: 41929.27495688,
-  rate: 0.000023412724,
-  spotRate: 42320.54634236,
-  market: "AUD",
-  timestamp: "2023-08-30T07:01:43.7533048+00:00",
-  rateType: "Ask",
-  rateSteps: "",
-};
-
-const Client = () => {
-  const [coin, setCoin] = useState<CoinType | null>(null);
-
+const CoinPrice = ({ data }: { data: CoinData }) => {
   const time = new Date(data.timestamp).toLocaleString("en-AU", {
     year: "numeric",
     month: "long",
@@ -35,6 +20,49 @@ const Client = () => {
   });
 
   return (
+    <>
+      <div className="my-4 text-gray-600">
+        Current ({time}) price of{" "}
+        <span className="font-bold text-lg">{data.buy}</span> is
+      </div>
+      <div className="text-primary-800">
+        <span className="text-7xl font-primary sm:text-9xl">
+          {Number(data.ask).toFixed(2)}
+        </span>
+        <span>{data.market}</span>
+      </div>
+    </>
+  );
+};
+
+const Client = () => {
+  const [data, setData] = useState<CoinData | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const onClick = async (coin: string) => {
+    try {
+      const res = await fetch(
+        `https://trade.cointree.com/api/prices/aud/${coin}`
+      );
+      if (!res.ok) {
+        setError("Network response was not ok.");
+        setData(null);
+      }
+      const json = await res.json();
+      setData(json);
+      setError(null);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+        setData(null);
+      } else {
+        setError("An unknown error occurred while fetching data.");
+        setData(null);
+      }
+    }
+  };
+
+  return (
     <div className="flex-1 flex flex-col justify-center items-center">
       <div
         className="my-8 inline-flex rounded-md shadow-[0_4px_9px_-4px_#3b71ca] "
@@ -43,29 +71,26 @@ const Client = () => {
         <DynamicButton
           name="BTH"
           position="left"
-          onClick={() => setCoin(CoinType.BTC)}
+          onClick={() => onClick(CoinType.BTC)}
         />
         <DynamicButton
           name="ETH"
           position="middle"
-          onClick={() => setCoin(CoinType.ETH)}
+          onClick={() => onClick(CoinType.ETH)}
         />
         <DynamicButton
           name="XRP"
           position="right"
-          onClick={() => setCoin(CoinType.XRP)}
+          onClick={() => onClick(CoinType.XRP)}
         />
       </div>
 
-      <div className="my-4 text-gray-600">
-        Current ({time}) price of {data.buy} is
-      </div>
-      <div className="text-primary-800">
-        <span className="text-7xl font-primary sm:text-9xl">
-          {Number(data.ask).toFixed(2)}
-        </span>
-        <span>{data.market}</span>
-      </div>
+      {data ? (
+        <CoinPrice data={data} />
+      ) : (
+        <div className="text-gray-600">Select a coin to check the price</div>
+      )}
+      {error && <div className="text-red-600">{error}</div>}
     </div>
   );
 };

@@ -16,7 +16,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    // Use suppressHydrationWarning to avoid warning:
+    // Extra attributes from the server
+    // https://stackoverflow.com/questions/75337953/what-causes-nextjs-warning-extra-attributes-from-the-server-data-new-gr-c-s-c
+    <html lang="en" suppressHydrationWarning>
       <body className={roboto.className}>
         <ThemeProvider>{children}</ThemeProvider>
       </body>

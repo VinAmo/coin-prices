@@ -69,18 +69,21 @@ const Client = () => {
         role="group"
       >
         <DynamicButton
-          name="BTH"
-          position="left"
+          name={CoinType.BTC}
+          category="solid"
+          alignment="left"
           onClick={() => onClick(CoinType.BTC)}
         />
         <DynamicButton
-          name="ETH"
-          position="middle"
+          name={CoinType.ETH}
+          category="solid"
+          alignment="middle"
           onClick={() => onClick(CoinType.ETH)}
         />
         <DynamicButton
-          name="XRP"
-          position="right"
+          name={CoinType.XRP}
+          category="solid"
+          alignment="right"
           onClick={() => onClick(CoinType.XRP)}
         />
       </div>

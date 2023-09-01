@@ -1,3 +1,11 @@
+export enum Theme {
+  LIGHT = "light",
+  DARK = "dark",
+  ROSE = "rose",
+  SKY = "sky",
+  TEAL = "teal",
+}
+
 export enum CoinType {
   BTC = "BTC",
   ETH = "ETH",

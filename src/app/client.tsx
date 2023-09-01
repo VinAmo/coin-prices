@@ -3,6 +3,7 @@
 import { CoinData, CoinType } from "@/types";
 import dynamic from "next/dynamic";
 import { useState } from "react";
+import ThemeSwitch from "@/components/theme-switch";
 
 const DynamicButton = dynamic(() => import("@/components/button"), {
   ssr: false,
@@ -21,7 +22,7 @@ const CoinPrice = ({ data }: { data: CoinData }) => {
 
   return (
     <>
-      <div className="my-4 text-gray-600">
+      <div className="my-4 text-primary-600">
         Current ({time}) price of{" "}
         <span className="font-bold text-lg">{data.buy}</span> is
       </div>
@@ -94,6 +95,7 @@ const Client = () => {
         <div className="text-gray-600">Select a coin to check the price</div>
       )}
       {error && <div className="text-red-600">{error}</div>}
+      <ThemeSwitch />
     </div>
   );
 };

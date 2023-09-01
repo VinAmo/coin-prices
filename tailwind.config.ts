@@ -16,7 +16,17 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       colors: {
-        primary: colors.green,
+        primary: {
+          900: "var(--primary-900)",
+          800: "var(--primary-800)",
+          700: "var(--primary-700)",
+          600: "var(--primary-600)",
+          500: "var(--primary-500)",
+          400: "var(--primary-400)",
+          300: "var(--primary-300)",
+          200: "var(--primary-200)",
+          100: "var(--primary-100)",
+        },
       },
       fontFamily: {
         primary: ['"Black Ops One"', "cursive"],

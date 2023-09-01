@@ -16,19 +16,22 @@ const Client = () => {
         `https://trade.cointree.com/api/prices/aud/${coin}`
       );
       if (!res.ok) {
-        setError("Network response was not ok.");
-        setData(null);
+        throw new Error("Received an 'not ok' HTTP response.");
       }
+
       const json = await res.json();
+
+      if (!json) {
+        throw new Error("Received empty data.");
+      }
+
       setData(json);
       setError(null);
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
-        setData(null);
       } else {
         setError("An unknown error occurred while fetching data.");
-        setData(null);
       }
     }
   };
